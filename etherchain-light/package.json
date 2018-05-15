@@ -6,6 +6,10 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "js-base64": "^2.4.3",
+    "pako": "^1.0.6",
+    "text-encoding": "0.6.4",
+    "highlightjs": "9.10.0",
     "abi-decoder": "^1.0.9",
     "async": "^2.1.5",
     "bignumber.js": "^4.0.0",
