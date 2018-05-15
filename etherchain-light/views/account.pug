@@ -6,9 +6,6 @@ block content
   else
     h3 Account #{account.address}
   table.table
-    tr
-      td Balance:
-      td #{ethformatter(account.balance)}
     if account.name
       tr
         td Name:
@@ -16,18 +13,32 @@ block content
 
   div
     ul.nav.nav-tabs(role='tablist')
-      li.active(role='presentation')
-        a(href='#transactions', aria-controls='transactions', role='tab', data-toggle='tab') Transactions
-      if account.isContract
-        li(role='presentation')
-          a(href='#code', aria-controls='code', role='tab', data-toggle='tab') Code
       if account.source
-        li(role='presentation')
-          a(href='#source', aria-controls='source', role='tab', data-toggle='tab') Source
-        li(role='presentation')
+        li.active(role='presentation')
           a(href='#contractState', aria-controls='source', role='tab', data-toggle='tab') Contract State
+        li(role='presentation')
+          a(href='#transactions', aria-controls='transactions', role='tab', data-toggle='tab') Transactions
+      else
+        li.active(role='presentation')
+          a(href='#transactions', aria-controls='transactions', role='tab', data-toggle='tab') Transactions
     .tab-content
-      #transactions.tab-pane.active(role='tabpanel')
+      if account.source
+        #contractState.tab-pane.active(role='tabpanel')
+          h4 Current contract state
+          table.table
+            thead
+              tr
+                th Function
+                th Result
+              tbody
+                for item in account.contractState
+                  tr
+                    td #{item.name}
+                    if item.name == 'checkInfo'
+                      td <pre><code class="json">#{item.result}</code></pre>
+                    else
+                      td #{item.result}
+        #transactions.tab-pane(role='tabpanel')
         h3 Recent Activity
         table.table
           thead
@@ -38,7 +49,7 @@ block content
               th
               th From
               th To
-              th Amount
+                        th
           tbody
             for block in account.blocks
               for trace in block
@@ -53,7 +64,8 @@ block content
                     td New Coins
                     td 
                       a(href="/account/" + trace.action.author) #{nameformatter.format(trace.action.author)}
-                    td #{ethformatter(trace.action.value)}
+                              td
+                                a(href="/block/" + trace.blockNumber) Перейти
                 else if trace.type !== "reward"
                   tr            
                     td 
@@ -74,7 +86,8 @@ block content
                         a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
                       td 
                         a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
-                      td #{ethformatter(trace.action.value)}
+                                td
+                                  a(href="/tx/" + trace.transactionHash)  Перейти
                     else if trace.type === "create"
                       td
                         if trace.action.from === account.address
@@ -85,7 +98,8 @@ block content
                         a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
                       td
                         a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
-                      td #{ethformatter(trace.action.value)}
+                                td
+                                  a(href="/tx/" + trace.transactionHash)  Перейти
                     else if trace.type === "suicide"
                       td
                         if trace.action.address === account.address
@@ -98,29 +112,77 @@ block content
                         a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
                       td #{ethformatter(trace.action.balance)}
       
-      if account.isContract
-        #code.tab-pane(role='tabpanel')
-          h3 Code
-          if !account.source
-            a(href="/contract/verify") Upload source
-          pre #{account.code}
-      if account.source
-        #source.tab-pane(role='tabpanel')
-          h4 Source
-          pre #{account.source.source}
-          h4 ABI
-          pre #{account.source.abi}
-          h4 Constructor
-          pre #{account.source.constructorArgs}
-        #contractState.tab-pane(role='tabpanel')
-          h4 Current contract state
+      else
+        #transactions.tab-pane.active(role='tabpanel')
+          h3 Recent Activity
           table.table
             thead
               tr
-                th Function
-                th Result
+                th Hash
+                th Block
+                th Type
+                th
+                th From
+                th To
+                th
             tbody
-              for item in account.contractState
+              for block in account.blocks
+                for trace in block
+                  if trace.type === "reward" && trace.action.author === account.address
                 tr
-                  td #{item.name}
-                  td #{item.result}
+                      td
+                        a(href="/block/" + trace.blockNumber) #{trace.blockHash.substr(0, 10)}...
+                      td
+                        a(href="/block/" + trace.blockNumber) #{trace.blockNumber}
+                      td Mining Reward
+                      td
+                      td New Coins
+                      td
+                        a(href="/account/" + trace.action.author) #{nameformatter.format(trace.action.author)}
+                      td
+                        a(href="/block/" + trace.blockNumber) Перейти
+                  else if trace.type !== "reward"
+                    tr
+                      td
+                        a(href="/tx/" + trace.transactionHash)  #{trace.transactionHash.substr(0, 10)}...
+                      td
+                        a(href="/block/" + trace.blockNumber) #{trace.blockNumber}
+                      td.capitalize
+                        if trace.error
+                          span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
+                        |  #{trace.type}
+                      if trace.type === "call"
+                        td
+                          if trace.action.from === account.address
+                            span.glyphicon.glyphicon-export(style="color: red;")
+                          else
+                            span.glyphicon.glyphicon-import(style="color: green;")
+                        td
+                          a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                        td
+                          a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+                        td
+                          a(href="/tx/" + trace.transactionHash)  Перейти
+                      else if trace.type === "create"
+                        td
+                          if trace.action.from === account.address
+                            span.glyphicon.glyphicon-export(style="color: red;")
+                          else
+                            span.glyphicon.glyphicon-import(style="color: green;")
+                        td
+                          a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                        td
+                          a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+                        td
+                          a(href="/tx/" + trace.transactionHash)  Перейти
+                      else if trace.type === "suicide"
+                        td
+                          if trace.action.address === account.address
+                            span.glyphicon.glyphicon-export(style="color: red;")
+                          else
+                            span.glyphicon.glyphicon-import(style="color: green;")
+                        td
+                          a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+                        td
+                          a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+                        td #{ethformatter(trace.action.balance)}
