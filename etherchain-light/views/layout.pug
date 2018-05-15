@@ -27,26 +27,15 @@ html(lang="en")
             span.icon-bar
             span.icon-bar
           |  
-          a.navbar-brand(href='/') Etherchain Light
+          a.navbar-brand(href='/') Ambuy Coin
         #navbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             li
               a(href='/') Home
             li
-              a(href='/accounts') Accounts
+              a(href=config.ercUrl + '/accounts') Accounts
             li
-              a(href='/tx/pending') Pending Tx
-            li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-                | Tools
-                span.caret
-              ul.dropdown-menu
-                li
-                  a(href='/tx/submit') Submit Tx
-                li
-                  a(href='/contract/verify') Verify Contract 
-                li
-                  a(href='/signature/verify') Verify Signature                
+              a(href=config.ercUrl + '/events') Events
               
           form.navbar-form.navbar-right(action="/search", method="POST")
             .form-group
