@@ -19,5 +19,5 @@ block content
           for account in accounts
             tr
               td
-                a(href="/account/" + account._id) #{account._id}
+                a(href="/account/" + account._id) #{nameformatter.format(account._id)}
               td #{tokenformatter.format(account.balance)}

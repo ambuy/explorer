@@ -4,7 +4,7 @@ function nameFormatter(config) {
   
   this.format = function(address) {
     if (this.conf.names[address]) {
-      return address.substr(0, 10) + "... (" + this.conf.names[address] + ")";
+            return this.conf.names[address];
     } else {
       return address;
     }
