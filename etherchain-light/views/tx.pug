@@ -27,23 +27,8 @@ block content
         else
           | New Contract
     tr
-      td Amount:
-      td #{ethformatter(tx.value)}
-    tr
       td Nonce:
       td #{tx.nonce}
-    tr
-      td Gas Limit:
-      td #{tx.gas}
-    tr
-      td Gas Used:
-      td #{tx.gasUsed}
-    tr
-      td Gas Price: 
-      td #{ethformatter(tx.gasPrice)}
-    tr
-      td Fee:
-      td #{ethformatter(tx.gasUsed * tx.gasPrice)}
     if tx.callInfo
       tr
         td Function Name:
@@ -111,7 +96,7 @@ block content
         th Type
         th From
         th To
-        th Amount
+        th
     tbody
       for trace in tx.traces
         tr
@@ -125,7 +110,7 @@ block content
               a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
             td 
               a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
-            td #{ethformatter(trace.action.value)}
+            td
           else if trace.type === "create"
             td
               a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
@@ -134,10 +119,10 @@ block content
                 a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
               else
                 div #{'-'}
-            td #{ethformatter(trace.action.value)}
+            td
           else if trace.type === "suicide"
             td
               a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
             td
               a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
-            td #{ethformatter(trace.action.balance)}
+            td
