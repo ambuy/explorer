@@ -1,7 +1,7 @@
 # explorer
 Техническое задание.
 
-1. В качестве основы использовать форк Etherchain Light и ERC20 Explorer от Parity.
+1. В качестве основы использовать форк Etherchain Light и ERC20 Explorer от Bitfly.
 2. Совместитить оба интерфейса в один, который будет отображать:
 - Блоки (Etherchain Light)
 - Транзакции данных (Etherchain Light)
