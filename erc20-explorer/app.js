@@ -61,8 +61,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/account', account);
-app.use('/accounts', accounts);
+app.use('/token-account', account);
+app.use('/token-accounts', accounts);
 app.use('/event', event);
 app.use('/events', events);
 app.use('/search', search);

@@ -12,9 +12,9 @@ block content
       h3 Transactions
     .col-md-1
       if offset - stepSize >= 0
-        a.btn.btn-default(href="/account/" + balance._id + "/" + (offset - stepSize)) Previous
+        a.btn.btn-default(href="/token-account/" + balance._id + "/" + (offset - stepSize)) Previous
     .col-md-1
-        a.btn.btn-default(href="/account/" + balance._id + "/" + (offset + stepSize)) Next
+        a.btn.btn-default(href="/token-account/" + balance._id + "/" + (offset + stepSize)) Next
   .row
     .col-md-12
       .table-responsive

@@ -4,9 +4,9 @@ mixin event_row(event)
       td
         a(href="/event/" + event._id) #{event.event}
       td
-        a(href="/account/" + event.args._from) #{nameformatter.format(event.args._from)}
+        a(href="/token-account/" + event.args._from) #{nameformatter.format(event.args._from)}
       td
-        a(href="/account/" + event.args._to) #{nameformatter.format(event.args._to)}
+        a(href="/token-account/" + event.args._to) #{nameformatter.format(event.args._to)}
       td #{tokenformatter.format(event.args._value)}
       td #{moment(event.timestamp * 1000).fromNow()}
   if event.event === "Approval"
@@ -14,8 +14,8 @@ mixin event_row(event)
       td
         a(href="/event/" + event._id) #{event.event}
       td
-        a(href="/account/" + event.args._owner) #{event.args._owner}
+        a(href="/token-account/" + event.args._owner) #{event.args._owner}
       td
-        a(href="/account/" + event.args._spender) #{event.args._spender}
+        a(href="/token-account/" + event.args._spender) #{event.args._spender}
       td #{tokenformatter.format(event.args._value)}
       td #{moment(event.timestamp * 1000).fromNow()}

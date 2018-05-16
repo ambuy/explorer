@@ -6,9 +6,9 @@ block content
       h3 Accounts
     .col-md-1
       if offset - stepSize >= 0
-        a.btn.btn-default(href="/accounts/" + (offset - stepSize)) Previous
+        a.btn.btn-default(href="/token-accounts/" + (offset - stepSize)) Previous
     .col-md-1
-        a.btn.btn-default(href="/accounts/" + (offset + stepSize)) Next
+        a.btn.btn-default(href="/token-accounts/" + (offset + stepSize)) Next
   .row
     .col-md-12
       .table-responsive
@@ -19,5 +19,5 @@ block content
           for account in accounts
             tr
               td
-                a(href="/account/" + account._id) #{nameformatter.format(account._id)}
+                a(href="/token-account/" + account._id) #{nameformatter.format(account._id)}
               td #{tokenformatter.format(account.balance)}
