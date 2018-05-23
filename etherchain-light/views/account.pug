@@ -34,7 +34,7 @@ block content
                 for item in account.contractState
                   tr
                     td #{item.name}
-                    if item.name == 'checkInfo'
+                    if item.name == 'checkInfo' || item.name == 'data'
                       td <pre><code class="json">#{item.result}</code></pre>
                     else
                       td #{item.result}

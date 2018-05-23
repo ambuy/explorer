@@ -49,7 +49,7 @@ block content
               a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
             td
               if tx.to
-                a(href="/account/" + tx.to) #{!tx.qrInfo ? nameformatter.format(tx.to) : 'ShoppingList'}
+                a(href="/account/" + tx.to) #{!tx.name ? nameformatter.format(tx.to) : tx.name}
               else
                 | New Contract
             td
