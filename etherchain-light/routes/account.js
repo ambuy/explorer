@@ -30,9 +30,13 @@ router.get('/:account', function(req, res, next) {
       } else {
         data.fromBlock = 0x00;
       }
-      web3.eth.getBalance(req.params.account, function(err, balance) {
-        callback(err, balance);
-      });
+      try {
+        web3.eth.getBalance(req.params.account, function (err, balance) {
+          callback(err, balance);
+        });
+      } catch(e) {
+        callback("error", null);
+      }
     }, function(balance, callback) {
       data.balance = balance;
       web3.eth.getCode(req.params.account, function(err, code) {

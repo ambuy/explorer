@@ -133,13 +133,21 @@ router.get('/raw/:tx', function(req, res, next) {
   
   async.waterfall([
     function(callback) {
-      web3.eth.getTransaction(req.params.tx, function(err, result) {
-        callback(err, result);
-      });
+      try {
+        web3.eth.getTransaction(req.params.tx, function(err, result) {
+          callback(err, result);
+        });
+      } catch (e) {
+        callback("error", null);
+      }
     }, function(result, callback) {
-      web3.trace.replayTransaction(result.hash, ["trace", "stateDiff", "vmTrace"], function(err, traces) {
-        callback(err, result, traces);
-      });
+      try {
+        web3.trace.replayTransaction(result.hash, ["trace", "stateDiff", "vmTrace"], function(err, traces) {
+            callback(err, result, traces);
+        });
+      } catch (e) {
+        callback("error", null, null);
+      }
     }
   ], function(err, tx, traces) {
     if (err) {
